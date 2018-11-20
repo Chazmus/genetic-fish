@@ -7,6 +7,7 @@ import pygame
 from pygame.locals import *
 
 import utils
+from neural import NeuralNetwork
 
 
 class Fish(object):
@@ -26,6 +27,7 @@ class Fish(object):
         self.y = random.randint(1, pygame.display.get_surface().get_width())
         self.direction = random.randint(1, 360)
         self.fitness = 0
+        self.neural_network = NeuralNetwork()
 
     def run(self):
         """ The main method for the fish, should be run each game tick
