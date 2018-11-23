@@ -1,23 +1,29 @@
+import random
+
+
 class NeuralNetwork(object):
-    def __init__(self, n_inputs=4, n_hidden_layers=1, n_neuron_per_layer=3, n_outputs=4):
-        self.n_inputs = n_inputs
-        self.n_hidden_layers = n_hidden_layers
-        self.hidden_layers = []
-        for i in range(n_hidden_layers):
-            self.hidden_layers.append(Layer(n_neuron_per_layer))
-        self.n_outputs = n_outputs
+    def __init__(self, inputs):
+        self.hidden_layer = Layer(4, inputs)
+        self.output = Layer(4, self.hidden_layer.neurons)
 
 
 class Layer(object):
 
-    def __init__(self, n_neuron_per_layer):
-        self.n_neuron_per_layer = n_neuron_per_layer
+    def __init__(self, n_neurons: int, previous_layer):
+        self.n_neuron_per_layer = n_neurons
         self.neurons = []
-        for i in range(n_neuron_per_layer):
-            self.neurons.append(Neuron())
+        for i in range(n_neurons):
+            self.neurons.append(Neuron(previous_layer))
 
 
 class Neuron(object):
-    def __init__(self, n_inputs, weights):
-        self.n_inputs = n_inputs
-        self.weights = weights
+    def __init__(self, inputs: []):
+        self.previous_layer = inputs
+        self.weights = []
+        for i in range(len(inputs)):
+            self.weights.append(random.uniform(0, 1))
+
+    def get_output(self):
+        result = 0
+        for i in range(len(self.weights)):
+            result += self.weights[i] * self.previous_layer[i].get_output()

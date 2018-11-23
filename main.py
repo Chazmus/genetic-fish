@@ -58,7 +58,7 @@ while True:
 
     # Run the fish
     for fish in fish_list:
-        fish.run()
+        fish.run(food_list)
         for food in food_list:
             food.run(fish)
 

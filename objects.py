@@ -1,6 +1,7 @@
 """ Objects module to hold all the objects for the game
 """
 
+import math
 import random
 
 import pygame
@@ -27,9 +28,9 @@ class Fish(object):
         self.y = random.randint(1, pygame.display.get_surface().get_width())
         self.direction = random.randint(1, 360)
         self.fitness = 0
-        self.neural_network = NeuralNetwork()
+        # self.neural_network = NeuralNetwork()
 
-    def run(self):
+    def run(self, food_list):
         """ The main method for the fish, should be run each game tick
         """
 
@@ -41,8 +42,17 @@ class Fish(object):
         # Move the fish
         self.__move()
 
+        self._find_closest_food(food_list)
+
         # Draw the fish
         pygame.display.get_surface().blit(self.rotated_surface, self.rectangle)
+
+    def _find_closest_food(self, food_list):
+        return min(food_list, key=lambda x: self._distance_between(x, self))
+
+    def _distance_between(self, x, y):
+        return math.sqrt((x.rectangle.x - y.rectangle.x) ** 2 + (x.rectangle.y - y.rectangle.y) ** 2)
+
 
     def __move(self):
         dx, dy = utils.vector_to_delta_speed(self.direction, self.speed)
